@@ -1,0 +1,88 @@
+<template name="paginationItems">
+  {{> pages pagination=pagination}}
+
+  {{> pagesNav templateName=templateName pagination=pagination extendData=extendData}}
+</template>
+<template name="pages">
+  {{#with items}}
+    {{!-- 不能直接遍历items，因为需要在item helper中通过Template.parentData()获取items cursor count --}}
+    {{#each this}}
+      {{#with item @index}}
+        {{> Template.dynamic template=itemTemp data=data}}
+      {{/with}}
+    {{/each}}
+  {{/with}}
+</template>
+
+<template name="pagesNav">
+  {{#with context}}
+    {{#if pagesGt1}}
+      <ul class="pagination dora {{ulClass}} {{marginBottom}}">
+        {{#each buttons}}
+          {{> Template.dynamic template=templateName data=data}}
+        {{/each}}
+      </ul>
+    {{/if}}
+  {{/with}}
+</template>
+<template name="defaultPagesEntry">
+  {{#if pathValid}}
+    <li class="{{class}}"><a class="pager {{class}} btn btn-default" href="#" data="{{this.path}}">{{label}}</a></li>
+  {{else}}
+    <li class="pagesInfo"><p>{{label}}</p></li>
+  {{/if}}
+</template>
+<template name="simplePagesEntry">
+  {{#if pathValid}}
+    <li class="{{class}} {{liClass}}">
+      <a class="pager {{class}}" href="#" data="{{this.path}}">{{label}}</a>
+    </li>
+  {{else}}
+    <li class="pagesInfo {{pagesInfoClass}}">
+      <input name="currentPage" class="pageinput" value="{{currentPage}}">
+
+      <div class="inline">/</div>
+      <div class="inline">{{totalPage}}</div>
+    </li>
+  {{/if}}
+</template>
+
+<template name="defaultPagsNav">
+  <ul class="pagination dorapagination">
+    {{#each pagerButtons}}
+      {{#if pathValid}}
+        <li class="{{class}}"><a class="pager {{class}} btn btn-default" href="#" data="{{this.path}}">{{label}}</a></li>
+      {{else}}
+        <li class="pagesInfo"><p>{{label}}</p></li>
+      {{/if}}
+    {{/each}}
+  </ul>
+</template>
+<template name="simplePagesNav">
+  <ul class="pagination dora {{ulClass}} {{marginBottom}}">
+    {{#each pagerButtons}}
+      {{#if pathValid}}
+        <li class="{{class}} {{liClass}}">
+          <a class="pager {{class}}" href="#" data="{{this.path}}">{{label}}</a>
+        </li>
+      {{else}}
+        <li class="pagesInfo {{pagesInfoClass}}">
+          <input name="currentPage" class="pageinput" value="{{currentPage}}">
+
+          <div class="inline">/</div>
+          <div class="inline">{{totalPage}}</div>
+        </li>
+      {{/if}}
+    {{/each}}
+  </ul>
+</template>
+
+<template name="pagesInfo">
+  <span>{{currentPage}}/{{totalPage}}</span>
+</template>
+
+<template name="masterItem">
+  <div style="width:100%;height:300px; text-align: center; display: table;">
+    <b style="font-size:84px; display: table-cell; vertical-align: middle;">{{id}}</b>
+  </div>
+</template>
